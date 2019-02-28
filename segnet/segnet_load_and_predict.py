@@ -8,11 +8,26 @@ from __future__ import division
 from __future__ import print_function
 import keras
 import time
+import argparse
 from deployment.models import SegNetModel
 from deployment.data_readers import generate_evaluation_batches, generate_prediction_batch
 from deployment.postprocessors import get_images_from_softmax
 from deployment.data_writer import save_predictions, create_video, save_images_with_predictions
 from hyperparameters import *
+
+parser = argparse.ArgumentParser(description='Argument parser')
+
+""" Arguments related to network architecture"""
+parser.add_argument('--Comp', dest='Comp', type=str,
+                    default='ML', help='Which computer, ML/AE/MT - chooses path to weights')
+
+args = parser.parse_args()
+Comp = args.Comp
+
+SEGNET_SAVED_WEIGHTS = {"ML": "/WeightModels/exjobb_SecretStuff_AnnieAndMartin/segnet_weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5",
+                        "AE": "C:/Users/s26915/Documents/SegNet/weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5",
+                        "MT": "weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5"}
+
 
 
 # get images to predict
@@ -26,7 +41,7 @@ model_instance = SegNetModel(shape=SEGNET_INPUT_SHAPE,
                              num_classes=nbr_classes[task],
                              pre_trained_encoder=True,
                              segned_indices=True,
-                             weights=SEGNET_SAVED_WEIGHTS[task],
+                             weights=SEGNET_SAVED_WEIGHTS[Comp],
                              load_weights_by_name=True)
 
 segnet = model_instance.create_model()

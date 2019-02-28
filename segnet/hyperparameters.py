@@ -2,7 +2,6 @@
 task = "general"
 
 
-
 # task specific
 list_classes = {"coarse": [255],
                 "general": [90, 16, 7, 46, 45, 26, 58, 192, 177, 153, 194, 119, 70, 164, 210, 117, 0, 84, 76]}
@@ -19,8 +18,8 @@ SEGNET_INPUT_SHAPE = (480, 360, 3) # !!! it was trained with this dimensions!
 SEGNET_SAVED_MODEL = {"coarse": "models/Segnet_perceptron_coarse_model.h5",
                       "general": ""}
 
-SEGNET_SAVED_WEIGHTS = {"coarse": "weights/Segnet_perceptron_coarse_weights-lowest_loss.hdf5",
-                        "general": "weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5"}
+#SEGNET_SAVED_WEIGHTS = {"coarse": "weights/Segnet_perceptron_coarse_weights-lowest_loss.hdf5",
+ #                       "general": "weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5"}
 
 SEGNET_PREDICTION_IMAGES_ROOT_PATH = {"coarse": "coarse_input_selection/images",
                                       "general": "general_input_selection/images"}

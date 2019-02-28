@@ -40,12 +40,19 @@ parser = argparse.ArgumentParser(description='Argument parser')
 parser.add_argument('--width', dest='width', type=int, default=512, help='width of input images')
 parser.add_argument('--height', dest='height', type=int, default=256, help='height of input images')
 parser.add_argument('--resolution', dest='resolution', type=int, default=1, help='resolution [1:H, 2:Q, 3:E]')
-parser.add_argument('--checkpoint_dir', dest='checkpoint_dir', type=str, default='checkpoint/IROS18/pydnet', help='checkpoint directory')
+# parser.add_argument('--checkpoint_dir', dest='checkpoint_dir', type=str, default='checkpoint/IROS18/pydnet', help='checkpoint directory')
 parser.add_argument('--case', dest='case', type=int, default='2', help='case=1 image / case=2 cam')
 parser.add_argument('--scale', dest='scale', type=int, default='2', help='scale size ')
 parser.add_argument('--image', dest='NR', type=str, default='2', help='image nr')
+parser.add_argument('--Comp', dest='Comp', type=str,
+                    default='ML', help='Which computer, ML/AE/MT - chooses path to weights')
 
 args = parser.parse_args()
+
+PYDNET_SAVED_WEIGHTS = {"ML": "/WeightModels/exjobb_SecretStuff_AnnieAndMartin/pydnet_weights/pydnet",
+                        "AE": "C:/Users/s26915/Documents/pydnet/checkpoint/IROS18/pydnet",
+                        "MT": "weights/Segnet_perceptron_general_gta_swap_weights-lowest_loss.hdf5"}
+#weights=PYDNET_SAVED_WEIGHTS[Comp]
 
 def main(_):
 
@@ -55,6 +62,7 @@ def main(_):
     case = args.case
     scale = args.scale
     NR = args.NR
+    Comp = args.Comp
     placeholders = {'im0':tf.placeholder(tf.float32,[None, None, None, 3], name='im0')}
 
     with tf.variable_scope("model") as scope:
@@ -69,7 +77,7 @@ def main(_):
 
       with tf.Session() as sess:
         sess.run(init)
-        loader.restore(sess, args.checkpoint_dir)
+        loader.restore(sess, PYDNET_SAVED_WEIGHTS[Comp])
         while True:
           link = 'road_ex' + NR + '.jpg'
           img = cv2.imread(link)
@@ -98,7 +106,7 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(init)
-        loader.restore(sess, args.checkpoint_dir)
+        loader.restore(sess, PYDNET_SAVED_WEIGHTS[Comp])
         while True:
           for i in range(4):
             cam.grab()
