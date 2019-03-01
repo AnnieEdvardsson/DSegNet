@@ -33,7 +33,7 @@ from pydnet import *
 
 # forces tensorflow to run on CPU
 #os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ["CUDA_VISIBLE_DEVICES"] = 2
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 parser = argparse.ArgumentParser(description='Argument parser')
 
