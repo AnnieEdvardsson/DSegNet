@@ -70,7 +70,7 @@ def main(_):
 
     if Comp=='ML':
       import os
-      os.environ["CUDA_VISIBLE_DEVICES"] = Cuda
+      os.environ["CUDA_VISIBLE_DEVICES"] = str(Cuda)
 
     placeholders = {'im0':tf.placeholder(tf.float32,[None, None, None, 3], name='im0')}
 
