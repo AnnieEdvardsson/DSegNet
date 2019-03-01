@@ -79,7 +79,7 @@ def main(_):
         sess.run(init)
         loader.restore(sess, PYDNET_SAVED_WEIGHTS[Comp])
         while True:
-          link = 'road_ex' + NR + '.jpg'
+          link = 'Road_ex' + NR + '.jpg'
           img = cv2.imread(link)
 
           img = cv2.resize(img, (width*scale, height*scale)).astype(np.float32) / 255.
