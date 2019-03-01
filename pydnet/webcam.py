@@ -32,7 +32,8 @@ from utils import *
 from pydnet import *
 
 # forces tensorflow to run on CPU
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+#os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ["CUDA_VISIBLE_DEVICES"] = 2
 
 parser = argparse.ArgumentParser(description='Argument parser')
 
@@ -46,8 +47,7 @@ parser.add_argument('--scale', dest='scale', type=int, default='2', help='scale 
 parser.add_argument('--image', dest='NR', type=str, default='2', help='image nr')
 parser.add_argument('--Comp', dest='Comp', type=str,
                     default='ML', help='Which computer, ML/AE/MT - chooses path to weights')
-parser.add_argument('--Cuda', dest='Cuda', type=int,
-                    default='1', help='Which cuda to run on ')
+
 
 args = parser.parse_args()
 
@@ -65,12 +65,10 @@ def main(_):
     scale = args.scale
     NR = args.NR
     Comp = args.Comp
-    Cuda = args.Cuda
 
 
-    if Comp=='ML':
-      import os
-      os.environ["CUDA_VISIBLE_DEVICES"] = str(Cuda)
+
+
 
     placeholders = {'im0':tf.placeholder(tf.float32,[None, None, None, 3], name='im0')}
 
