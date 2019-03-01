@@ -9,11 +9,11 @@ from __future__ import print_function
 import keras
 import time
 import argparse
-from deployment.models import SegNetModel
-from deployment.data_readers import generate_evaluation_batches, generate_prediction_batch
-from deployment.postprocessors import get_images_from_softmax
-from deployment.data_writer import save_predictions, create_video, save_images_with_predictions
-from hyperparameters import *
+from .deployment.models import SegNetModel
+from .deployment.data_readers import generate_evaluation_batches, generate_prediction_batch
+from .deployment.postprocessors import get_images_from_softmax
+from .deployment.data_writer import save_predictions, create_video, save_images_with_predictions
+from .hyperparameters import *
 
 parser = argparse.ArgumentParser(description='Argument parser')
 
