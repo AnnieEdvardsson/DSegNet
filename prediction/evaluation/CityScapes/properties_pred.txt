@@ -1,0 +1,6 @@
+Model: 
+Dataset: CityScapes 
+#Epochs: 
+Batch size: 
+Optimizer: 
+List of classes: 

@@ -1,0 +1,6 @@
+Model: 
+Dataset: KITTI 
+#Epochs: 
+Batch size: 
+Optimizer: 
+List of classes: 

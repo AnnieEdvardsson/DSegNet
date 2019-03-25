@@ -1,0 +1,84 @@
+
+
+import tensorflow as tf
+import sys
+import os
+import argparse
+import time
+import datetime
+from utils import *
+from pydnet import *
+
+# forces tensorflow to run on CPU
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+
+resolution = 1
+
+
+PYDNET_SAVED_WEIGHTS = "/WeightModels/exjobb/pydnet_weights/pydnet"
+
+INPUT_DATA_PATH = ['/MLDatasetsStorage/exjobb/KITTI/images/train/',
+                   '/MLDatasetsStorage/exjobb/KITTI/images/test/',
+                   '/MLDatasetsStorage/exjobb/KITTI/images/val/']
+
+OUTPUT_DATA_PATH = ['/MLDatasetsStorage/exjobb/KITTI/images/traindepth/',
+                   '/MLDatasetsStorage/exjobb/KITTI/images/testdepth/',
+                   '/MLDatasetsStorage/exjobb/KITTI/images/valdepth/']
+
+type = ['train', 'test', 'val']
+
+
+def mainPydnet():
+
+  with tf.Graph().as_default():
+
+    placeholders = {'im0': tf.placeholder(tf.float32, [None, None, None, 3], name='im0')}
+
+    with tf.variable_scope("model") as scope:
+        model = pydnet(placeholders)
+
+    init = tf.group(tf.global_variables_initializer(),
+                    tf.local_variables_initializer())
+
+    loader = tf.train.Saver()
+
+    with tf.Session() as sess:
+      sess.run(init)
+      loader.restore(sess, PYDNET_SAVED_WEIGHTS)
+
+      for i, (INPUT_PATH, OUTPUT_PATH) in enumerate(zip(INPUT_DATA_PATH, OUTPUT_DATA_PATH)):
+        image_name = os.listdir(INPUT_PATH)
+
+        # Removes all files in output folders
+        for file in os.listdir(OUTPUT_PATH):
+            os.remove(OUTPUT_PATH + file)
+
+        print('Removed all depth pre-existing images in: ' + type[i] + ' folder')
+
+        for image in image_name:
+          width = 512
+          height = 256
+
+          img = cv2.imread(INPUT_PATH + image)
+
+          img = cv2.resize(img, (width, height)).astype(np.float32) / 255.
+          img = np.expand_dims(img, 0)
+          disp = sess.run(model.results[resolution - 1], feed_dict={placeholders['im0']: img})
+
+          disp_color = applyColorMap(disp[0, :, :, 0] * 20, 'plasma')
+          gray_image = cv2.cvtColor(disp_color, cv2.COLOR_BGR2GRAY)
+
+          #height, width = img.shape[:2]
+          toShow = cv2.resize(gray_image*255, (width, height))
+
+          image = os.path.splitext(image)[0]                    # Remove extension of image name
+          cv2.imwrite(OUTPUT_PATH + image + '.jpg', toShow)
+
+        print('Estimated depth for images in: ' + type[i] + ' folder \n')
+
+
+if __name__ == '__mainPydnet__':
+    tf.app.run()
+
+
+

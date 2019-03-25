@@ -1,0 +1,10 @@
+PREDICTION PROPERTIES 
+##################################################### 
+Model: SegNetModel 
+Dataset: CityScapes 
+Time: 2019-03-24 10:51 
+Batch size: 10 
+List classes: [0, 7, 16, 26, 45, 46, 58, 70, 76, 84, 90, 117, 119, 153, 164, 177, 192, 194, 210] 
+Pre trained encoder: True 
+Pooling indices: False 
+Load weights by name: False 
