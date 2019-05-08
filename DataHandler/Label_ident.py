@@ -4,14 +4,14 @@ import numpy as np
 import os
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 # The GPU id to use, usually either "0" or "1"
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 NumbersALL = []
 
 def update(DATASET):
 
-    OUTPUT_DATA_ROOT_PATH = "/MLDatasetsStorage/exjobb/" + DATASET + "/labels"
-    END_PATH = "/semantic_rgb"
+    OUTPUT_DATA_ROOT_PATH = "/MLDatasetsStorage/exjobb/" + DATASET + "/labels/labelId"
+    END_PATH = "/train"
     #END_PATH_DEPTH = ["/traindepth", "/valdepth", "/testdepth"]
 
     # Gray scale image, boolean, input, depth, output
@@ -23,7 +23,7 @@ def update(DATASET):
     return OUTPUT_DATA_ROOT_PATH, END_PATH,  GRAYSCALE, FILE_TYPE
 
 
-DATASET = 'KITTI'
+DATASET = 'CityScapes'
 OUTPUT_DATA_ROOT_PATH, END_PATH, GRAYSCALE, FILE_TYPE = update(DATASET)
 
 
@@ -40,12 +40,13 @@ uni_GRAY = np.unique(OUTPUT_GRAY)
 #print("unique numbers in GRAY read:" + str(uni_GRAY))
 
 for image in image_name:
-    OUTPUT_RGB = cv2.imread(OUTPUT_DATA_ROOT_PATH + END_PATH + "/" + image)
-    print("unique numbers in RGB read:" + str(np.unique(OUTPUT_RGB)))
+    # OUTPUT_RGB = cv2.imread(OUTPUT_DATA_ROOT_PATH + END_PATH + "/" + image)
+    # print("unique numbers in RGB read:" + str(np.unique(OUTPUT_RGB)))
 
     OUTPUT = cv2.imread(OUTPUT_DATA_ROOT_PATH + END_PATH + "/" + image, 0)
-    print("unique numbers in GRAY read:" + str(np.unique(OUTPUT)))
+    # print("unique numbers in GRAY read:" + str(np.unique(OUTPUT)))
     Numbers = np.unique(OUTPUT)
+    print("Unique numbers for current img: {}".format(Numbers))
 
     NumbersALL = np.hstack([NumbersALL, Numbers])
 
